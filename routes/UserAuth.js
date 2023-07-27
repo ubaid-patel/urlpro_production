@@ -131,11 +131,17 @@ router.post('/OAuth', async function (req, res, next) {
 
 
 router.post('/sendOTP',async function (req, res, next) {
+  const users = req.db.collection("users");
+  const user = await users.findOne({email:req.query.email})
+  if(user){
+    res.status(401).send({ message: "User already exist" });
+  }else{
   const otps = req.db.collection("otps");
   const otp = getRandomInt(100000, 999999);
   otps.updateOne({ email: req.query.email }, { $set: { otp: otp, created_at: new Date() } }, { upsert: true })
   sendOTP(otp,req.query.email).then(message=>console.log(message)).catch(message=>console.log(message))
-  return res.status(201).send({ message: "otp sent successfully" });
+  res.status(201).send({ message: "otp sent successfully" });
+  }
 });
 
 router.post('/refreshData', async function (req, res, next) {
