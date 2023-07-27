@@ -139,9 +139,9 @@ router.post('/sendOTP',async function (req, res, next) {
   const otps = req.db.collection("otps");
   const otp = getRandomInt(100000, 999999);
   otps.updateOne({ email: req.query.email }, { $set: { otp: otp, created_at: new Date() } }, { upsert: true })
+  res.status(201).send({ message: "otp sent successfully" });
   const send  = await sendOTP(otp,req.query.email);
   console.log(send);
-  res.status(201).send({ message: "otp sent successfully" });
   }
 });
 
