@@ -69,7 +69,7 @@ app.use(async (req, res, next) => {
     checkDBReady();
   }
 });
-app.use('/static',express.static('static'))
+app.use('/static', express.static(path.join(__dirname, 'static')));
 app.use('/auth', userAuthRouter);
 app.use('/action', userActionsRouter);
 app.use('/recovery', recoveryRouter);
