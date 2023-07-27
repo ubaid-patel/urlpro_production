@@ -75,7 +75,7 @@ app.use('/action', userActionsRouter);
 app.use('/recovery', recoveryRouter);
 app.use('/links', linkRouter);
 
-app.get("/",(req,res)=>{
+app.get(["/","/login","Logout","/signup","/forgotPassword","/Dashboard","/Settings","/Feedback"],(req,res)=>{
   res.render('index')
 })
 app.get("/:endpoint",async function(req,res){
