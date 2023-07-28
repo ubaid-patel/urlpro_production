@@ -119,7 +119,7 @@ router.post('/OAuth', async function (req, res, next) {
     const existingUser = await users.findOne({ email: user.email });
     if (existingUser) {
       await users.updateOne({email:user.email},{$set:{picture:user.picture}});
-      const resp = await Authorize(existingUser, users, allLinks);
+      const resp = await Authorize({...existingUser,picture:user.picture}, users, allLinks);
       res.status(201).json(resp);
     } else {
       passhash = await bcrypt.hash(process.env.SECRET_KEY,5)
