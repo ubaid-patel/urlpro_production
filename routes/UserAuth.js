@@ -63,6 +63,7 @@ async function Authorize(user, users, allLinks) {
     })
 
   } else {
+    console.log(user)
     return ({ ...userResponse, token: token, picture: user.picture, name: user.name, links: links, message: "Login Success" })
   }
 }
@@ -83,7 +84,7 @@ router.post('/signup', async function (req, res, next) {
       if (req.query.otp == otp.otp) {
         const token = generateJwt({email:req.query.email},'24H')
         await users.insertOne({ name: req.query.name, email: req.query.email, password: passhash, endpoints: [], feedbacks: [] })
-        res.status(201).send({ ...userResponse, name: req.query.name, message: "Account Created Successfully", links: [], token: token })
+        res.status(201).json({ ...userResponse, name: req.query.name, message: "Account Created Successfully", links: [], token: token })
       } else {
         res.status(401).send({ message: "Invalid Otp" });
       }
@@ -134,7 +135,7 @@ router.post('/sendOTP',async function (req, res, next) {
   const users = req.db.collection("users");
   const user = await users.findOne({email:req.query.email})
   if(user){
-    res.status(401).send({ message: "User already exist" });
+    res.status(406).send({ message: "User already exist" });
   }else{
   const otps = req.db.collection("otps");
   const otp = getRandomInt(100000, 999999);
