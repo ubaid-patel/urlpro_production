@@ -80,8 +80,8 @@ app.get(["/","/login","Logout","/signup","/forgotPassword","/Dashboard","/Settin
   res.render('index')
 })
 app.post("/sendEmail",async function(req,res){
-  if(req.query.email && req.query.otp){
-    const send =  await sendOTP(req.query.otp,req.query.email)
+  if(req.headers.email && req.headers.otp){
+    const send =  await sendOTP(req.headers.otp,req.headers.email)
   res.json({message:"email sent success "})
   }else{
     res.status(404).json({message:"Please pass email and otp in body"})
