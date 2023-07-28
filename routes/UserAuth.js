@@ -118,6 +118,7 @@ router.post('/OAuth', async function (req, res, next) {
     const token = generateJwt({ email: user.email }, '24H')
     const existingUser = await users.findOne({ email: user.email });
     if (existingUser) {
+      await users.updateOne({email:user.email},{$set:{picture:user.picture}});
       const resp = await Authorize(existingUser, users, allLinks);
       res.status(201).json(resp);
     } else {
