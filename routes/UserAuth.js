@@ -4,6 +4,7 @@ const sendOTP = require('./sendOTP');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const axios = require('axios');
+const addToQueue = require('./addToQueue')
 
 function getRandomInt(min, max) {
   const randomDecimal = Math.random();
@@ -140,7 +141,7 @@ router.post('/sendOTP',async function (req, res, next) {
   const otps = req.db.collection("otps");
   const otp = getRandomInt(100000, 999999);
   otps.updateOne({ email: req.query.email }, { $set: { otp: otp, created_at: new Date() } }, { upsert: true })
-  const send  = await sendOTP(otp,req.query.email);
+  const send  = await addToQueue(req.query.email,otp)
   console.log(send);
   res.status(201).send({ message: "otp sent successfully" });
   }
