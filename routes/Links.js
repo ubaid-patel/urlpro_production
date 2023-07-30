@@ -72,5 +72,22 @@ router.delete('/deleteLink', function(req, res, next) {
   allLinks.deleteOne({endpoint:req.query.endpoint})
   res.status(202).json({message:"Link deleted"})
 });
-
+router.post('/refreshLinks',async function(req,res){
+  let endpoints = [];
+  try{
+    endpoints = JSON.parse(req.query.endpoints);
+  }catch(err){
+    console.log("404")
+    return res.status(200).send({message:"No Links are present",links:[]})
+  }
+  const links = req.db.collection('links');
+  //Create Links array
+  const getLinks = await links.aggregate([
+    { $match: { endpoint: { $in: endpoints }, }, },
+    { $addFields: { createdOn: { $toDate: '$_id' }, }, },
+    { $project: { _id: 0, endpoint: 1, url: 1, title: 1, views: 1, createdOn: 1, }, },
+  ]).toArray();
+  console.log(endpoints[0])
+  res.status(200).json({message:"Success",links:getLinks})
+})
 module.exports = router;
