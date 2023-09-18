@@ -16,7 +16,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 // Set the allowed origin and credentials
 const corsOptions = {
-  origin: '*',
+  origin: 'https://clipcatcher.vercel.app',
   credentials: true,
 };
 
