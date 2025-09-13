@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const bcrypt  = require('bcrypt');
+const bcrypt  = require('bcryptjs');
 const sendOTP = require('./sendOTP');
 const addToQueue = require('./addToQueue')
 function getRandomInt(min, max) {
