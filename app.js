@@ -95,7 +95,8 @@ app.get("/:endpoint",async function(req,res){
   const endpoint = req.params.endpoint;
   const links = req.db.collection("links")
   const link = await links.findOneAndUpdate({endpoint:endpoint},{$inc:{views:1}})
-  res.redirect(link.value.url)
+  
+  res.redirect(link.url)
 })
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
