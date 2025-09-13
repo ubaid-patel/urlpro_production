@@ -20,13 +20,15 @@ const corsOptions = {
   credentials: true,
 };
 
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+// Enable CORS for all routes
+app.use(cors());
 
 // Database connection setup
 const MongoClient = require('mongodb').MongoClient;
